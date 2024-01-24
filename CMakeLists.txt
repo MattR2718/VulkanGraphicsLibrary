@@ -1,7 +1,7 @@
 ﻿# CMakeList.txt : CMake project for VulkanGraphicsLibrary, include source and define
 # project specific logic here.
 #
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.21)
 
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
@@ -10,6 +10,10 @@ if (POLICY CMP0141)
 endif()
 
 project ("VulkanGraphicsLibrary")
+
+
+add_subdirectory(examples)
+
 
 # Add source to this project's executable.
 add_executable (VulkanGraphicsLibrary "VulkanGraphicsLibrary.cpp" "VulkanGraphicsLibrary.h")
