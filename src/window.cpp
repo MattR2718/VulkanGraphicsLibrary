@@ -1,7 +1,7 @@
 
 
 
-#include "window.h"
+#include "vgl/window.h"
 
 void vgl::Window::testPrint(){
 	std::cout << "IN WINDOW\n";

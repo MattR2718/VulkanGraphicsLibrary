@@ -11,13 +11,26 @@ endif()
 
 project (vgl VERSION 0.0.1 DESCRIPTION "Vulkan Graphics Library")
 
+
+
+
+#
+#
+#
+#Create Library
+#
+#
+#Add libaray with name (vgl or vgl::vgl)
 add_library(${PROJECT_NAME} STATIC)
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+#Target where cpp files are
 target_sources(${PROJECT_NAME} 
 	PRIVATE 
 		src/window.cpp
 )
 
+#Set includes for library
 target_include_directories(${PROJECT_NAME}
     PRIVATE
         # where the library itself will look for its internal headers
@@ -29,14 +42,19 @@ target_include_directories(${PROJECT_NAME}
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-set(public_headers 
-    include
-)
-
+#Target public headers
+set(public_headers include)
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${public_headers}")
 
-#include_directories(src)
 
+#Get libaraies required for library
+find_package(Vulkan REQUIRED)
+find_package(glm REQUIRED CONFIG)
+find_package(glfw3 CONFIG REQUIRED)
+
+
+
+#Add subdirectories
 add_subdirectory(examples)
 add_subdirectory(src)
 add_subdirectory(include)

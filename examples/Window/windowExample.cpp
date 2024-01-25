@@ -1,4 +1,4 @@
-#include "window.h"
+#include "vgl/window.h"
 
 int main() {
 	vgl::Window::testPrint();
