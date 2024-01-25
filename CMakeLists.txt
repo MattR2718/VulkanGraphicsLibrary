@@ -30,7 +30,7 @@ target_include_directories(${PROJECT_NAME}
 )
 
 set(public_headers 
-    include/vgl/window.h
+    include/vgl
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${public_headers}")
