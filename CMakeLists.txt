@@ -9,12 +9,13 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project ("VulkanGraphicsLibrary" VERSION 0.0.1 DESCRIPTION "Vulkan Graphics Library")
+project (vgl VERSION 0.0.1 DESCRIPTION "Vulkan Graphics Library")
 
 add_library(${PROJECT_NAME} STATIC)
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 target_sources(${PROJECT_NAME} 
 	PRIVATE 
-		src/window.cpp
+		vgl/src/window.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
@@ -23,14 +24,13 @@ target_include_directories(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
     PUBLIC
         # where top-level project will look for the library's public headers
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/vgl/include>
         # where external projects will look for the library's public headers
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 set(public_headers 
-    include/window.h
-
+    vgl/include/window.h
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${public_headers}")
@@ -38,7 +38,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${public_headers
 #include_directories(src)
 
 add_subdirectory(examples)
-add_subdirectory(src)
+add_subdirectory(vgl)
 
 # Add source to this project's executable.
 add_executable (TestHello "VulkanGraphicsLibrary.cpp" "VulkanGraphicsLibrary.h")
