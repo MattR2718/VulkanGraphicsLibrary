@@ -18,7 +18,7 @@ namespace vgl {
 
 		bool resizable = true;
 
-		GLFWwindow *window = nullptr;
+		GLFWwindow *window;
 
 		Window();
 		Window(size_t _width, size_t _height);
