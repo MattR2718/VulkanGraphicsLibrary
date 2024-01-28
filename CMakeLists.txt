@@ -27,8 +27,9 @@ add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 #Target where cpp files are
 target_sources(${PROJECT_NAME} 
 	PRIVATE 
-		src/window.cpp
+		src/Window.cpp
         src/VulkanCore.cpp
+        src/PhysicalDevice.cpp
 )
 
 #Set includes for library

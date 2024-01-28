@@ -1,4 +1,4 @@
-#include "vgl/window.h"
+#include "vgl/Window.h"
 #include "vgl/VulkanCore.h"
 
 int main() {
