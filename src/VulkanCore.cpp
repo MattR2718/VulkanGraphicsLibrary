@@ -1,12 +1,14 @@
 #include "vgl/VulkanCore.h"
 
-vgl::VulkanCore::VulkanCore(std::unique_ptr<vgl::Window> _window) {
-    std::cout << "CREATING CORE\n";
-    this->window = std::move(_window);
-	this->createInstance();
-
+vgl::VulkanCore::VulkanCore(std::shared_ptr<vgl::Window> _window) 
+    : window(_window),
+    physicalDevice(
+        (this->createInstance(), std::make_shared<const VkInstance>(this->instance)),
+        this->deviceExtensions,
+        (this->createInstance(), this->window->createVulkanSurface(this->instance), std::make_shared<VkSurfaceKHR>(this->window->surface))
+    )
+{
     this->setupDebugMessenger();
-
 
     std::cout << "CORE CREATED\n";
 }
@@ -17,6 +19,8 @@ vgl::VulkanCore::~VulkanCore() {
     if (this->enableValidationLayers) {
         this->DestroyDebugUtilsMessengerEXT(this->instance, this->debugMessenger, nullptr);
     }
+
+    vkDestroySurfaceKHR(this->instance, this->window->surface, nullptr);
 
     vkDestroyInstance(this->instance, nullptr);
 
@@ -32,6 +36,7 @@ vgl::VulkanCore::~VulkanCore() {
 //The instance is the connection between the application and the Vulkan library
 //Creating it  involves specifying details about the application to the driver
 void vgl::VulkanCore::createInstance() {
+    if (this->instance) { return; }
     //Check if validation layers have been requested and if so are available
     if (this->enableValidationLayers && !this->checkValidationLayerSupport()) {
         throw std::runtime_error("VALIDATION LAYERS REQUESTED, BUT NOT AVAILABLE");

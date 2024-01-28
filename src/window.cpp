@@ -17,6 +17,7 @@ vgl::Window::Window(size_t _width, size_t _height, std::string _windowName, bool
 
 //Destroctor
 vgl::Window::~Window() {
+
 	glfwDestroyWindow(this->window);
 	glfwTerminate();
 }
@@ -32,6 +33,14 @@ bool vgl::Window::isOpen() {
 
 void vgl::Window::pollEvents() {
 	glfwPollEvents();
+}
+
+
+//Create Vulkan surface
+void vgl::Window::createVulkanSurface(VkInstance& instance) {
+	if (glfwCreateWindowSurface(instance, this->window, nullptr, &this->surface) != VK_SUCCESS) {
+		throw std::runtime_error("FAILED TO CREATE WINDOW SURFACE");
+	}
 }
 
 

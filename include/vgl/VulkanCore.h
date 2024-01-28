@@ -1,10 +1,12 @@
 #ifndef VGL_VULKANCORE_H
 #define VGL_VULKANCORE_H
 
+#include "vulkan/vulkan.hpp"
+
 #include <iostream>
 
-#include "vulkan/vulkan.hpp"
-#include "vgl/window.h"
+#include "vgl/Window.h"
+#include "vgl/PhysicalDevice.h"
 
 namespace vgl {
 
@@ -12,19 +14,17 @@ namespace vgl {
 
 	public:
 
-		std::unique_ptr<vgl::Window> window;
+		
 
-		VulkanCore(std::unique_ptr<vgl::Window> _window);
+		VulkanCore(std::shared_ptr<vgl::Window> _window);
         ~VulkanCore();
 
 
 	private:
 
-		VkInstance instance;
+		VkInstance instance = NULL;
 
         VkDebugUtilsMessengerEXT debugMessenger;
-
-
 
 
         //Validation Layers
@@ -34,11 +34,25 @@ namespace vgl {
             "VK_LAYER_KHRONOS_validation"
         };
         //If 'Not Debug' then disable the validation layers
-        #ifdef NDEBUG
-                const bool enableValidationLayers = false;
-        #else
-                const bool enableValidationLayers = true;
-        #endif
+#ifdef NDEBUG
+        const bool enableValidationLayers = false;
+#else
+        const bool enableValidationLayers = true;
+#endif
+
+        
+        //Device extensions
+        const std::vector<const char*> deviceExtensions = {
+            "VK_KHR_swapchain"
+        };
+
+        //Window
+        std::shared_ptr<vgl::Window> window;
+
+        //Physical device
+        vgl::PhysicalDevice physicalDevice;
+
+
 
 		void createInstance();
         bool checkValidationLayerSupport();

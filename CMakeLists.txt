@@ -12,7 +12,7 @@ endif()
 project (vgl VERSION 0.0.1 DESCRIPTION "Vulkan Graphics Library")
 
 
-
+set(CMAKE_CXX_STANDARD 17)
 
 #
 #
@@ -20,7 +20,7 @@ project (vgl VERSION 0.0.1 DESCRIPTION "Vulkan Graphics Library")
 #Create Library
 #
 #
-#Add libaray with name (vgl or vgl::vgl)
+#Add library with name (vgl or vgl::vgl)
 add_library(${PROJECT_NAME} STATIC)
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
