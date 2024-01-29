@@ -52,6 +52,8 @@ namespace vgl {
 
 	private:
 
+		std::shared_ptr<VkInstance> instance;
+
 		void initGLFWWindow();
 
 	};

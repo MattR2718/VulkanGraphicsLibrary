@@ -16,7 +16,7 @@ namespace vgl {
 
 		
 
-		VulkanCore(std::shared_ptr<vgl::Window> _window);
+		VulkanCore(vgl::Window* _window);
         ~VulkanCore();
 
 
@@ -47,7 +47,7 @@ namespace vgl {
         };
 
         //Window
-        std::shared_ptr<vgl::Window> window;
+        std::unique_ptr<vgl::Window> window;
 
         //Physical device
         vgl::PhysicalDevice physicalDevice;

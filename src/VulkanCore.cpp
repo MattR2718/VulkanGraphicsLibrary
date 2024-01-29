@@ -1,7 +1,7 @@
 #include "vgl/VulkanCore.h"
 
-vgl::VulkanCore::VulkanCore(std::shared_ptr<vgl::Window> _window) 
-    : window(_window),
+vgl::VulkanCore::VulkanCore(vgl::Window *_window) 
+    : window(std::make_unique<vgl::Window>(*_window)),
     physicalDevice(
         (this->createInstance(), std::make_shared<const VkInstance>(this->instance)),
         this->deviceExtensions,
@@ -20,7 +20,9 @@ vgl::VulkanCore::~VulkanCore() {
         this->DestroyDebugUtilsMessengerEXT(this->instance, this->debugMessenger, nullptr);
     }
 
-    vkDestroySurfaceKHR(this->instance, this->window->surface, nullptr);
+    //this->window->~Window();
+
+    if (this->window->window) { this->window->~Window(); this->window.release(); }
 
     vkDestroyInstance(this->instance, nullptr);
 

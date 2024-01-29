@@ -4,7 +4,7 @@
 int main() {
 	vgl::Window window(1920, 1080, "Window Title");
 
-	vgl::VulkanCore vk(std::make_shared<vgl::Window>(window));
+	vgl::VulkanCore vk(&window);
 	 
 	while (window.isOpen()) {
 		window.pollEvents();
