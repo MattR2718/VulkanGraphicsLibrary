@@ -7,6 +7,8 @@ vgl::PhysicalDevice::PhysicalDevice(std::shared_ptr<const VkInstance> _instance,
     deviceExtensions(_deviceExtensions),
     surface(_surface)
 {
+    std::cout << "CREATING PHYSICAL DEVICE\n";
+
     //Count all possible physical devices
     uint32_t deviceCount = 0;
     vkEnumeratePhysicalDevices(*this->instance, &deviceCount, nullptr);
@@ -33,6 +35,16 @@ vgl::PhysicalDevice::PhysicalDevice(std::shared_ptr<const VkInstance> _instance,
     if (this->physicalDevice == VK_NULL_HANDLE) {
         throw std::runtime_error("UNABLE TO FIND A SUITABLE GPU");
     }
+
+    std::cout << "CREATED PHYSICAL DEVICE\n";
+}
+
+void vgl::PhysicalDevice::setInstance(std::shared_ptr<const VkInstance> _instance) {
+    this->instance = _instance;
+}
+
+void vgl::PhysicalDevice::setSurface(std::shared_ptr<VkSurfaceKHR> _surface) {
+    this->surface = _surface;
 }
 
 bool vgl::PhysicalDevice::isDeviceSuitable(const VkPhysicalDevice& device){

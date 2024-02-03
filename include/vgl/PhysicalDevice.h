@@ -4,6 +4,7 @@
 #include "vulkan/vulkan.hpp"
 
 #include <set>
+#include <iostream>
 
 #include "vgl/QueueFamilyIndices.h"
 #include "vgl/SwapChainSupportDetails.h"
@@ -22,6 +23,14 @@ namespace vgl {
 
 		PhysicalDevice() {};
 		PhysicalDevice(std::shared_ptr<const VkInstance> _instance, const std::vector<const char*>& _deviceExtensions, std::shared_ptr<VkSurfaceKHR> _surface);
+
+		//Implicitly define copy constructors
+		PhysicalDevice(const PhysicalDevice&) = default;
+		vgl::PhysicalDevice& vgl::PhysicalDevice::operator=(vgl::PhysicalDevice& d) { return d; }
+
+		void setInstance(std::shared_ptr<const VkInstance> _instance);
+
+		void setSurface(std::shared_ptr<VkSurfaceKHR> _surface);
 
 	private:
 

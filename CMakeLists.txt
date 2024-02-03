@@ -30,6 +30,7 @@ target_sources(${PROJECT_NAME}
 		src/Window.cpp
         src/VulkanCore.cpp
         src/PhysicalDevice.cpp
+        src/LogicalDevice.cpp
 )
 
 #Set includes for library
