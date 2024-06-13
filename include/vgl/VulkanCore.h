@@ -7,6 +7,7 @@
 
 #include "vgl/Window.h"
 #include "vgl/PhysicalDevice.h"
+#include "vgl/LogicalDevice.h"
 
 namespace vgl {
 
@@ -52,6 +53,8 @@ namespace vgl {
         //Physical device
         vgl::PhysicalDevice physicalDevice;
 
+        //Logical Device
+        vgl::LogicalDevice logicalDevice;
 
 
 		void createInstance();

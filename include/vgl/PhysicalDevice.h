@@ -34,7 +34,7 @@ namespace vgl {
 
 	private:
 
-		//Vecor to store all device extensions required
+		//Vector to store all device extensions required
 		const std::vector<const char*> deviceExtensions;
 
 		//Store pointer to vulkan instance

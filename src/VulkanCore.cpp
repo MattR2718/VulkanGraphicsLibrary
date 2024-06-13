@@ -7,6 +7,9 @@ vgl::VulkanCore::VulkanCore(vgl::Window *_window){
     
     //Create a vulkan instance
     this->createInstance();
+   
+    //Setup a debug messenger
+    this->setupDebugMessenger();
 
     //Create vulkan surface inside window
     this->window->createVulkanSurface(this->instance);
@@ -14,8 +17,8 @@ vgl::VulkanCore::VulkanCore(vgl::Window *_window){
     //Set the physical device
     this->physicalDevice = vgl::PhysicalDevice(std::make_shared<const VkInstance>(this->instance), this->deviceExtensions, std::make_shared<VkSurfaceKHR>(this->window->surface));
 
-    //Setup a debug messenger
-    this->setupDebugMessenger();
+    this->logicalDevice = vgl::LogicalDevice(std::make_shared<const VkInstance>(this->instance), this->deviceExtensions, std::make_shared<VkSurfaceKHR>(this->window->surface));
+
 
     std::cout << "CORE CREATED\n";
 }
