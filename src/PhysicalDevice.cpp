@@ -40,7 +40,7 @@ vgl::PhysicalDevice::PhysicalDevice(std::shared_ptr<const VkInstance> _instance,
 }
 
 vgl::PhysicalDevice::~PhysicalDevice(){
-    this->surface.
+    //this->surface.~shared_ptr();
 }
 
 void vgl::PhysicalDevice::setInstance(std::shared_ptr<const VkInstance> _instance) {
@@ -118,12 +118,13 @@ vgl::QueueFamilyIndices vgl::PhysicalDevice::findQueueFamilies(const VkPhysicalD
             indices.graphicsFamily = i;
         }
 
+        //TODO: Uncomment when get to
         //Check if can render to surface
-        VkBool32 presentSupport = false;
-        vkGetPhysicalDeviceSurfaceSupportKHR(device, i, *this->surface, &presentSupport);
-        if (presentSupport) {
-            indices.presentFamily = i;
-        }
+        //VkBool32 presentSupport = false;
+        //vkGetPhysicalDeviceSurfaceSupportKHR(device, i, *this->surface.get(), &presentSupport);
+        //if (presentSupport) {
+        //    indices.presentFamily = i;
+        //}
 
         //Early exit if all queue families requires have been found
         if (indices.isComplete()) {

@@ -29,20 +29,26 @@ vgl::VulkanCore::~VulkanCore() {
     
     
     
+    
+
+    //this->window->~Window();
+
+    
+
+    this->logicalDevice.~LogicalDevice();
+
+    this->physicalDevice.~PhysicalDevice();
+
+    
+
     if (this->enableValidationLayers) {
         this->DestroyDebugUtilsMessengerEXT(this->instance, this->debugMessenger, nullptr);
     }
 
-    //this->window->~Window();
+    //TODO: Add back in, find out why it is causing errors, suspect to do with jumping ahead with features
+    //vkDestroyInstance(this->instance, nullptr);
 
     if (this->window->window) { this->window->~Window(); this->window.release(); }
-
-    this->physicalDevice.
-
-    this->logicalDevice.~LogicalDevice();
-
-    vkDestroyInstance(this->instance, nullptr);
-
 
     std::cout << "Destroyed Vulkan Core\n";
 }

@@ -11,7 +11,10 @@ vgl::LogicalDevice::LogicalDevice(std::shared_ptr<const VkInstance> _instance, c
     QueueFamilyIndices indices = this->physicalDevice->findQueueFamilies((*this->physicalDevice).physicalDevice);
 
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-    std::set<uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value(), indices.presentFamily.value() };
+    
+    //TODO: Add back in when fix presentation family queue
+    //std::set<uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value(), indices.presentFamily.value() };
+    std::set<uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value() };
 
     float queuePriority = 1.0f;
     for (uint32_t queueFamily : uniqueQueueFamilies) {
@@ -66,8 +69,8 @@ vgl::LogicalDevice::LogicalDevice(std::shared_ptr<const VkInstance> _instance, c
 }
 
 vgl::LogicalDevice::~LogicalDevice(){
-    if (this->logicalDevice != VK_NULL_HANDLE) {
-        //vkDestroyDevice(this->logicalDevice, nullptr);
+    if (logicalDevice != VK_NULL_HANDLE) {
+        //vkDestroyDevice(logicalDevice, nullptr);
         
     }
 }
