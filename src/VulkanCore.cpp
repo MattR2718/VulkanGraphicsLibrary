@@ -1,9 +1,10 @@
 #include "vgl/VulkanCore.h"
 
-vgl::VulkanCore::VulkanCore(vgl::Window *_window){
+vgl::VulkanCore::VulkanCore(std::unique_ptr<vgl::Window> _window){
 
     //Set window
-    this->window = std::make_unique<vgl::Window>(*_window);
+    //this->window = std::make_unique<vgl::Window>(*_window);
+    this->window = std::move(_window);
     
     //Create a vulkan instance
     this->createInstance();
@@ -17,7 +18,7 @@ vgl::VulkanCore::VulkanCore(vgl::Window *_window){
     //Set the physical device
     this->physicalDevice = vgl::PhysicalDevice(std::make_shared<const VkInstance>(this->instance), this->deviceExtensions, std::make_shared<VkSurfaceKHR>(this->window->surface));
 
-    this->logicalDevice = vgl::LogicalDevice(std::make_shared<const VkInstance>(this->instance), this->deviceExtensions, std::make_shared<VkSurfaceKHR>(this->window->surface));
+    this->logicalDevice = vgl::LogicalDevice(std::make_shared<const VkInstance>(this->instance), this->deviceExtensions, std::make_shared<VkSurfaceKHR>(this->window->surface), std::make_shared<vgl::PhysicalDevice>(this->physicalDevice), this->enableValidationLayers, std::make_shared<std::vector<const char*>>(this->validationLayers));
 
 
     std::cout << "CORE CREATED\n";
@@ -25,7 +26,9 @@ vgl::VulkanCore::VulkanCore(vgl::Window *_window){
 
 vgl::VulkanCore::~VulkanCore() {
     std::cout << "Destroying Vulkan Core\n";
-
+    
+    
+    
     if (this->enableValidationLayers) {
         this->DestroyDebugUtilsMessengerEXT(this->instance, this->debugMessenger, nullptr);
     }
@@ -34,7 +37,12 @@ vgl::VulkanCore::~VulkanCore() {
 
     if (this->window->window) { this->window->~Window(); this->window.release(); }
 
+    this->physicalDevice.
+
+    this->logicalDevice.~LogicalDevice();
+
     vkDestroyInstance(this->instance, nullptr);
+
 
     std::cout << "Destroyed Vulkan Core\n";
 }

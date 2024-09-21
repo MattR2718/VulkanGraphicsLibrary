@@ -1,12 +1,14 @@
 #include "vgl/LogicalDevice.h"
 
-vgl::LogicalDevice::LogicalDevice(std::shared_ptr<const VkInstance> _instance, const std::vector<const char*>& _deviceExtensions, std::shared_ptr<VkSurfaceKHR> _surface, std::unique_ptr<VkPhysicalDevice> _physicalDevice)
+vgl::LogicalDevice::LogicalDevice(std::shared_ptr<const VkInstance> _instance, const std::vector<const char*>& _deviceExtensions, std::shared_ptr<VkSurfaceKHR> _surface, std::shared_ptr<vgl::PhysicalDevice> _physicalDevice, bool _enableValidationLayers, std::shared_ptr<std::vector<const char*>> _validationLayers)
     : instance(_instance),
     deviceExtensions(_deviceExtensions),
     surface(_surface),
-    physicalDevice(_physicalDevice)
+    physicalDevice(_physicalDevice),
+    enableValidationLayers(_enableValidationLayers),
+    validationLayers(_validationLayers)
 {
-    QueueFamilyIndices indices = this->findQueueFamilies(*this->physicalDevice);
+    QueueFamilyIndices indices = this->physicalDevice->findQueueFamilies((*this->physicalDevice).physicalDevice);
 
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
     std::set<uint32_t> uniqueQueueFamilies = { indices.graphicsFamily.value(), indices.presentFamily.value() };
@@ -46,54 +48,27 @@ vgl::LogicalDevice::LogicalDevice(std::shared_ptr<const VkInstance> _instance, c
     createInfo.ppEnabledExtensionNames = this->deviceExtensions.data();
 
     if (this->enableValidationLayers) {
-        createInfo.enabledLayerCount = static_cast<uint32_t>(this->validationLayers.size());
-        createInfo.ppEnabledLayerNames = this->validationLayers.data();
+        createInfo.enabledLayerCount = static_cast<uint32_t>((*this->validationLayers).size());
+        createInfo.ppEnabledLayerNames = (*this->validationLayers).data();
     }
     else {
         createInfo.enabledLayerCount = 0;
     }
 
     //Create logical device
-    if (vkCreateDevice(this->physicalDevice, &createInfo, nullptr, &this->device) != VK_SUCCESS) {
+    if (vkCreateDevice((*this->physicalDevice).physicalDevice, &createInfo, nullptr, &this->logicalDevice) != VK_SUCCESS) {
         throw std::runtime_error("FAILED TO CREATE LOGICAL DEVICE");
     }
 
-    vkGetDeviceQueue(this->device, indices.graphicsFamily.value(), 0, &this->graphicsQueue);
-    vkGetDeviceQueue(this->device, indices.presentFamily.value(), 0, &presentQueue);
+    vkGetDeviceQueue(this->logicalDevice, indices.graphicsFamily.value(), 0, &this->graphicsQueue);
+    //vkGetDeviceQueue(this->device, indices.presentFamily.value(), 0, &presentQueue);
 	
 }
 
-QueueFamilyIndices vgl::LogicalDevice::findQueueFamilies(VkPhysicalDevice device){
-    QueueFamilyIndices indices;
-
-    //Retrieve the list of queue families
-    uint32_t queueFamilyCount = 0;
-    vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
-    std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
-    vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
-
-    //Find queue family that supports VK_QUEUE_GRAPHICS_BIT
-    int i = 0;
-    for (const auto& queueFamily : queueFamilies) {
-        //Check if can do graphcis
-        if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-            indices.graphicsFamily = i;
-        }
-
-        //Check if can render to surface
-        VkBool32 presentSupport = false;
-        vkGetPhysicalDeviceSurfaceSupportKHR(device, i, this->surface, &presentSupport);
-        if (presentSupport) {
-            indices.presentFamily = i;
-        }
-
-        //Early exit if all queue families requires have been found
-        if (indices.isComplete()) {
-            break;
-        }
-
-        i++;
+vgl::LogicalDevice::~LogicalDevice(){
+    if (this->logicalDevice != VK_NULL_HANDLE) {
+        //vkDestroyDevice(this->logicalDevice, nullptr);
+        
     }
-
-    return indices;
 }
+

@@ -4,6 +4,7 @@
 #include "vulkan/vulkan.hpp"
 
 #include <iostream>
+#include <utility>
 
 #include "vgl/Window.h"
 #include "vgl/PhysicalDevice.h"
@@ -17,7 +18,7 @@ namespace vgl {
 
 		
 
-		VulkanCore(vgl::Window* _window);
+		VulkanCore(std::unique_ptr<vgl::Window> _window);
         ~VulkanCore();
 
 

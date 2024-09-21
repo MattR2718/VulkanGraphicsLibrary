@@ -39,6 +39,10 @@ vgl::PhysicalDevice::PhysicalDevice(std::shared_ptr<const VkInstance> _instance,
     std::cout << "CREATED PHYSICAL DEVICE\n";
 }
 
+vgl::PhysicalDevice::~PhysicalDevice(){
+    this->surface.
+}
+
 void vgl::PhysicalDevice::setInstance(std::shared_ptr<const VkInstance> _instance) {
     this->instance = _instance;
 }
@@ -62,7 +66,7 @@ bool vgl::PhysicalDevice::isDeviceSuitable(const VkPhysicalDevice& device){
     //return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU
     //        && deviceFeatures.geometryShader;
 
-    //Get whether deivce supports the queue families required
+    //Get whether device supports the queue families required
     QueueFamilyIndices indices = this->findQueueFamilies(device);
 
     //Check whether the device supports extensions
