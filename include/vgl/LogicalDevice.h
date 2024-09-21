@@ -35,6 +35,8 @@ namespace vgl {
 			this->graphicsQueue = other.graphicsQueue;
 			this->enableValidationLayers = other.enableValidationLayers;
 			this->validationLayers = other.validationLayers;
+
+			return *this;
 		}
 
 	private:
